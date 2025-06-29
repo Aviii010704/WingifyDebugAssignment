@@ -18,7 +18,6 @@ class BloodPDFTool(BaseTool):
 
     def _run(self, file_path: str):
         try:
-            file_path = "data/blood_test_report.pdf"
             docs = PyPDFLoader(file_path=file_path).load()
             full_report = ""
             for data in docs:

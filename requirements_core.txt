@@ -9,10 +9,14 @@ crewai-tools==0.47.1
 
 # LangChain + Gemini (Google Generative AI)
 langchain-google-genai
+langchain-community
 google-generativeai
 
 # PDF Processing
 pypdf2
+
+# Database and Utilities
+tabulate
 
 # Environment Variables
 python-dotenv
