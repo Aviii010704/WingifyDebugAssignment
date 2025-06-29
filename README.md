@@ -89,7 +89,7 @@ if not query:
 ### agents.py - Agent Configuration Issues
 
 **Bug 1: Undefined LLM Variable**
-- **Issue:** `llm = llm` created undefined variable error
+- **Issue:** `llm = llm` created undefined variable error *llm = llm?! seriously? XD*
 - **Fix:** Added proper API key validation and LLM configuration
 ```python
 # Before
@@ -140,7 +140,7 @@ tools=[blood_pdf_tool],  # ✅ Correct tool assignment
 ```
 
 **Bug 5: Missing Tools for Most Agents**
-- **Issue:** Only doctor agent could access PDF data, others couldn't read files
+- **Issue:** Only doctor agent could access PDF data, others couldn't read files *why the favouritism? :P*
 - **Fix:** Added `blood_pdf_tool` to all agents so they can process PDFs
 ```python
 # Before
@@ -207,7 +207,7 @@ class BloodPDFTool(BaseTool):
 ```
 
 **Bug 4: Hardcoded File Path**
-- **Issue:** Tool always defaulted to same file regardless of input
+- **Issue:** Tool always defaulted to same file regardless of input *A very sneaky one I must say! Respect!*
 - **Fix:** Uses actual `file_path` parameter passed from agents
 ```python
 # Before
@@ -359,7 +359,7 @@ verification = Task(
 
 ---
 
-## Database Integration
+## Database Integration *Because, why not?! XD*
 
 ### What I Added
 I added a complete database system to track and store all blood test analyses. This gives us data persistence, analysis history, and better debugging capabilities.
