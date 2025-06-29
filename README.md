@@ -359,6 +359,88 @@ verification = Task(
 
 ---
 
+## Database Integration
+
+### What I Added
+I added a complete database system to track and store all blood test analyses. This gives us data persistence, analysis history, and better debugging capabilities.
+
+### Database Features
+
+#### **SQLite Database (`blood_analysis.db`)**
+- **Files Table:** Stores uploaded file information (ID, filename, path, size, upload timestamp)
+- **Analysis Table:** Stores analysis results (ID, file reference, query, output, status, timestamp)
+- **Foreign Key Relationship:** Links analyses to their source files
+
+#### **CSV Export (`analysis_data.csv`)**
+- **Automatic Export:** All analysis data automatically exported to CSV
+- **Complete Records:** Includes analysis ID, file details, queries, outputs, and status
+- **Easy Analysis:** CSV format allows for easy data analysis and reporting
+
+### How It Works
+
+#### **Automatic Logging**
+```python
+# Every analysis is automatically logged
+save_file_and_analysis(
+    filename=file.filename,
+    stored_path=file_path,
+    size=os.path.getsize(file_path),
+    query=query,
+    output=str(response),
+    status="success"
+)
+```
+
+#### **Error Tracking**
+- **Success/Failure Status:** Each analysis marked as "success" or "error"
+- **Error Details:** Failed analyses include error messages for debugging
+- **Complete Audit Trail:** Full history of all attempts and results
+
+#### **Database Viewer**
+```bash
+python view_database.py  # Interactive menu to view analysis history
+```
+- **View All Entries:** Complete analysis history
+- **Last Entry:** Most recent analysis
+- **Last N Entries:** Configurable number of recent analyses
+- **Formatted Display:** Clean table format with tabulate
+
+### Database Schema
+
+#### **Files Table**
+```sql
+CREATE TABLE files (
+    id TEXT PRIMARY KEY,
+    filename TEXT,
+    stored_path TEXT,
+    size INTEGER,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Analysis Table**
+```sql
+CREATE TABLE analysis (
+    id TEXT PRIMARY KEY,
+    file_id TEXT,
+    query TEXT,
+    output TEXT,
+    status TEXT,
+    analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (file_id) REFERENCES files(id)
+);
+```
+
+### Why This Helps
+
+1. **Data Persistence:** All analyses saved for future reference
+2. **Debugging Support:** Error tracking and analysis history
+3. **Performance Monitoring:** Track analysis success rates and timing
+4. **User Support:** Ability to review past analyses and queries
+5. **Development Insights:** Understand usage patterns and common issues
+
+---
+
 ## Quick Setup
 
 ### 1. Environment Setup
@@ -434,7 +516,7 @@ python view_database.py  # Interactive menu
 ├── tools.py             # PDF tools
 ├── database.py          # Database ops
 ├── view_database.py     # DB viewer
-├── requirements_final.txt
+├── requirements_core.txt
 ├── data/                # Uploads
 └── .env                 # API key
 ```
@@ -465,7 +547,7 @@ No authentication required for local development.
 #### 1. Health Check
 **GET** `/`
 
-**Description:** Check if the API server is running
+**What it does:** Check if the API server is running
 
 **Response:**
 ```json
@@ -482,7 +564,7 @@ No authentication required for local development.
 #### 2. Analyze Blood Report
 **POST** `/analyze`
 
-**Description:** Upload and analyze a blood test PDF report using AI agents
+**What it does:** Upload and analyze a blood test PDF report using AI agents
 
 **Content-Type:** `multipart/form-data`
 
@@ -521,7 +603,7 @@ curl -X POST "http://localhost:8000/analyze" \
 - `200 OK` - Analysis completed successfully
 - `500 Internal Server Error` - Processing error
 
-**Analysis Process:**
+**How the analysis works:**
 1. **Verification** - Validates PDF format and content
 2. **Medical Analysis** - Professional medical interpretation
 3. **Nutrition Analysis** - Dietary recommendations
@@ -551,87 +633,5 @@ Visit `http://localhost:8000/docs` for Swagger UI with:
 All analyses are automatically stored in:
 - **SQLite Database:** `blood_analysis.db`
 - **CSV Export:** `analysis_data.csv`
-
----
-
-## Database Integration
-
-### Overview
-The system includes comprehensive database integration for tracking and storing all blood test analyses. This was added to provide data persistence, analysis history, and debugging capabilities.
-
-### Database Features
-
-#### **SQLite Database (`blood_analysis.db`)**
-- **Files Table:** Stores uploaded file information (ID, filename, path, size, upload timestamp)
-- **Analysis Table:** Stores analysis results (ID, file reference, query, output, status, timestamp)
-- **Foreign Key Relationship:** Links analyses to their source files
-
-#### **CSV Export (`analysis_data.csv`)**
-- **Automatic Export:** All analysis data automatically exported to CSV
-- **Complete Records:** Includes analysis ID, file details, queries, outputs, and status
-- **Easy Analysis:** CSV format allows for easy data analysis and reporting
-
-### Database Operations
-
-#### **Automatic Logging**
-```python
-# Every analysis is automatically logged
-save_file_and_analysis(
-    filename=file.filename,
-    stored_path=file_path,
-    size=os.path.getsize(file_path),
-    query=query,
-    output=str(response),
-    status="success"
-)
-```
-
-#### **Error Tracking**
-- **Success/Failure Status:** Each analysis marked as "success" or "error"
-- **Error Details:** Failed analyses include error messages for debugging
-- **Complete Audit Trail:** Full history of all attempts and results
-
-#### **Database Viewer**
-```bash
-python view_database.py  # Interactive menu to view analysis history
-```
-- **View All Entries:** Complete analysis history
-- **Last Entry:** Most recent analysis
-- **Last N Entries:** Configurable number of recent analyses
-- **Formatted Display:** Clean table format with tabulate
-
-### Database Schema
-
-#### **Files Table**
-```sql
-CREATE TABLE files (
-    id TEXT PRIMARY KEY,
-    filename TEXT,
-    stored_path TEXT,
-    size INTEGER,
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-#### **Analysis Table**
-```sql
-CREATE TABLE analysis (
-    id TEXT PRIMARY KEY,
-    file_id TEXT,
-    query TEXT,
-    output TEXT,
-    status TEXT,
-    analyzed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (file_id) REFERENCES files(id)
-);
-```
-
-### Benefits of Database Integration
-
-1. **Data Persistence:** All analyses saved for future reference
-2. **Debugging Support:** Error tracking and analysis history
-3. **Performance Monitoring:** Track analysis success rates and timing
-4. **User Support:** Ability to review past analyses and queries
-5. **Development Insights:** Understand usage patterns and common issues
 
 ---
