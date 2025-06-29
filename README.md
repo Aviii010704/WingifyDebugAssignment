@@ -88,8 +88,8 @@ if not query:
 
 ### agents.py - Agent Configuration Issues
 
-**Bug 1: Undefined LLM Variable**
-- **Issue:** `llm = llm` created undefined variable error *llm = llm?! seriously? XD*
+**Bug 1: Undefined LLM Variable**       *(llm = llm?! seriously? XD)*
+- **Issue:** `llm = llm` created undefined variable error 
 - **Fix:** Added proper API key validation and LLM configuration
 ```python
 # Before
@@ -139,8 +139,8 @@ tool=[BloodTestReportTool().read_data_tool],  # ❌ Wrong tool reference
 tools=[blood_pdf_tool],  # ✅ Correct tool assignment
 ```
 
-**Bug 5: Missing Tools for Most Agents**
-- **Issue:** Only doctor agent could access PDF data, others couldn't read files *why the favouritism? :P*
+**Bug 5: Missing Tools for Most Agents**        *(why the favouritism? :P)*
+- **Issue:** Only doctor agent could access PDF data, others couldn't read files 
 - **Fix:** Added `blood_pdf_tool` to all agents so they can process PDFs
 ```python
 # Before
@@ -206,8 +206,8 @@ class BloodPDFTool(BaseTool):
     def _run(self, file_path: str):  # ✅ Proper CrewAI tool method
 ```
 
-**Bug 4: Hardcoded File Path**
-- **Issue:** Tool always defaulted to same file regardless of input *A very sneaky one I must say! Respect!*
+**Bug 4: Hardcoded File Path**      *(Crazy Sneaky! Respect!)*
+- **Issue:** Tool always defaulted to same file regardless of input
 - **Fix:** Uses actual `file_path` parameter passed from agents
 ```python
 # Before
@@ -359,7 +359,7 @@ verification = Task(
 
 ---
 
-## Database Integration *Because, why not?! XD*
+## Database Integration        *(Because, why not?! XD)*
 
 ### What I Added
 I added a complete database system to track and store all blood test analyses. This gives us data persistence, analysis history, and better debugging capabilities.
